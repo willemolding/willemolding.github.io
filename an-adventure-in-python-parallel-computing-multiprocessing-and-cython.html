@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>An adventure in Python parallel computing: Multiprocessing and Cython</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/willemolding">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="/">WillemOlding </a></h1>
+                <nav><ul>
+    
+                        <li><a href="/pages/about-me.html">About Me</a></li>
+    
+                        <li><a href="/pages/contact.html">Contact</a></li>
+                    <li class="active"><a href="/category/articles.html">Articles</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/an-adventure-in-python-parallel-computing-multiprocessing-and-cython.html" rel="bookmark"
+           title="Permalink to An adventure in Python parallel computing: Multiprocessing and Cython">An adventure in Python parallel computing: Multiprocessing and Cython</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <span>Mon 07 November 2016</span>
+
+</footer><!-- /.post-info -->      <p>I am currently working on a structured machine learning algorithm for image processing. One of the really cool things about this algorithm is its ability to work in parallel at the pixel level. My goal was to implement the learning objective in Python in such a way as to take full advantage of the parallel nature of the problem.</p>
+<p>First barrier to success..The Python GIL</p>
+<p>A quick search for anything related to multicore processing in python will quickly give information regarding the GIL. This stands for 'Global interpreter Lock' and is a feature/curse of cpython. From what I was able to gather from other blog posts (see this post for a far better explanation than I can hope to give) this GIL prevents the python interpreter from running more than a single thread at any instance in time. The inability to use multiple threads leaves us with two ways forward to our goal of parallel python. We can either run multiple interpreters, each with a single thread, or find a way to somehow escape from the single minded oppression of the Python interpreter.</p>
+<p>Lets fire up those interpreters.. The multiprocessing module</p>
+<p>Python multiprocessing module
+There is actually an official python module dedicated the the problem of multiprocessing. It goes about it by using processes rather than threads for each parallel aspect of the program. On Unix systems each process is created by forking the current one and thus eliminates the overhead of starting up a whole new interpreter each time. 
+This module is also quite simple to use. New processes can be created explicitly using the Process class e.g.</p>
+<p>from multiprocessing import Process<br />
+ import os  </p>
+<p>def f():<br />
+   print "hello from process ID",os.getppid()  </p>
+<p>p = Process(target=f,args=())<br />
+ p.start()<br />
+ p.join()  </p>
+<p>Any parameters you want to pass to the function can be included in the args tuple.</p>
+<p>It it also possible to create a pool of available processes and use the map function. This works just like the regular python map function but automatically assigns the computations across all available processes. This simple example illustrates this by squaring every value in a list using 4 processes.</p>
+<p>from multiprocessing import Pool  </p>
+<p>def operation(x):<br />
+      return x**2  </p>
+<p>data = range(10000)<br />
+ pool = Pool(processes=4)<br />
+ result = pool.map(operation, data)  </p>
+<p>Great. So that is it? We can use this multiprocessing module and everything is going to work great. Unfortunately this was not the case for my problem. The issue becomes apparent if you think back to the fundamental difference between threads and processes. Threads have a shared memory space while processes have their own memory. Of course each process can have a copy of the data in its own memory but for machine learning problems where the datasets are huge this translates to memory inefficient programs.</p>
+<p>A workaround exists that uses shared memory. Shared memory is allocated when using multiprocessing Value and Array objects. These can be passed to the other processes without duplicating memory.</p>
+<p>While this methods works I was not satisfied. This prompted me to look further and try to find other methods for implementing parallel algorithms in Python.</p>
+<p>Ditching the interpreter altogether using Cython</p>
+<p>For those not familiar with Cython it is a fantastic tool to have in your python programming toolbox. It allows the python programmer to generate compiled functions with minimal additional programming effort. I am only a beginner when it comes to Cython but in minutes I was able to get my code running much faster . Because Cython functions are compiled they are able to run without the GIL, opening up multithreading possibilities. Here is what I have picked up from Cython so far.</p>
+<p>Cython files use the '.pyx' extension to differentiate them from regular python files. After installing Cython it is simply a matter of creating a setup.py file to convert your Cython code to C code and compile. See the Cython docs for more details. The output will be a shared library file ('.so' on unix based or '.dll' for windows users). This file can be imported just like any other python module and any methods that you write in the compiled function are accessible from regular python.</p>
+<p>Say we have a function that searches for the largest value in a 1D Numpy array of positive floating point numbers. In pure python this might naively look something like this:</p>
+<p>def find_max(arr):<br />
+      largest = 0<br />
+      for i in range(len(arr)):<br />
+           if arr[i] &gt; largest:<br />
+                largest = arr[i]<br />
+      return largest  </p>
+<p>and running a quick test in ipython</p>
+<p>%timeit find_largest(arange(9999999))  </p>
+<p>gives a running time of 3.8s. If we take this exact same function and compile the file using Cython, the same code executes in....wait for it.... 2.01s. So not an amazing improvement I guess it is pretty good for no extra work. The real power of Cython comes about when you include type information. This has very intuitive syntax for anyone coming from a strongly types language. Below is the function from above annotated with Cython types.</p>
+<p>def find_max(double[:] arr):<br />
+      cdef double largest = 0<br />
+      cdef unsigned int i<br />
+      for i in range(len(arr)):<br />
+           if arr[i] &gt; largest:<br />
+                largest = arr[i]  </p>
+<div class="highlight"><pre>  return largest
+</pre></div>
+
+
+<p>As you can see all we have added is some type info in the parameter list telling the compiler to expect an array of doubles and a bit of type info for the local variables. The running time... 10.0ms. A much more substantial improvement. That is comparable with the numpy amax function which takes 6.04ms on my machine.</p>
+<p>So we all know that Cython is totally cool but how can we extend this to parallel computing. Well because we are now operating outside of the interpreter for the most part we can get into multithreading. First though I had better introduce one of my favourite Cython features. The annotation flag. Simply run cython from the command line with the flag '-a'.</p>
+<p>The result is a .html file that contains a breakdown of your code. Here is our example.</p>
+<p>By clicking in any line it will give you the C code corresponding to that line. What we are most interested in however is the "yellowness" of each line. In Cython annotation files a white line is good. This means the line works totally in C code and does not use any calls to the Python API. The more yellow a line is the more it relies on the Python API. To put it simply we want to eliminate the yellow! Especially if we want to go on to the next stage of 'releasing the GIL'. The first and last lines of the function will always be yellow as they are exposed to the python side of things. The rest are likely due to array bounds checking. A few tricks and the function body can be made completely white.</p>
+<p>When we have no reliance on the python API at all it is possible to release the GIL using the very simple syntax 'with nogil:'. Cython is also kind enough to provide us the an extremely simply method to go parallel. The 'prange' loop. For many cases this is a simple solution,unfortunately our find_max function is not well suited to using a parallel for loop as there is dependencies between each iteration. Instead we will make use of the 'threading' module in python.</p>
+<p>Here is the code making use of threading. Unfortunately our once simple code is not quite a bit more complex but that is the price we pay for speed. </p>
+<p>cimport cython<br />
+ from cython cimport parallel<br />
+ import numpy as np<br />
+ import threading  </p>
+<p>cdef int max_n_threads = 10<br />
+ results = np.zeros(max_n_threads)  </p>
+<p>@cython.boundscheck(False)<br />
+ @cython.wraparound(False)<br />
+ def find_max_worker(double[:] arr,int thread_id):<br />
+      cdef double largest = 0<br />
+      cdef int i<br />
+      with nogil:<br />
+           for i in range(arr.shape[0]):<br />
+                if arr[i] &gt; largest:<br />
+                     largest = arr[i]<br />
+      results[thread_id] = largest  </p>
+<p>@cython.boundscheck(False)<br />
+ @cython.wraparound(False)<br />
+ @cython.cdivision<br />
+ def find_max(double[:] arr,n_threads):<br />
+      #length of array must be integer divisible by the number of threads<br />
+      cdef int split = arr.shape[0]//n_threads <br />
+      cdef int i<br />
+      threads = []<br />
+      for i in range(n_threads):<br />
+           t = threading.Thread(target=find_max_worker, <br />
+                                    args=(arr[i<em>split:(i+1)</em>split],i))<br />
+           t.start()<br />
+           threads.append(t)  </p>
+<div class="highlight"><pre>  for i in range(n_threads):  
+       threads[i].join()
+
+  find_max_worker(results,0)  
+  return results[i]
+</pre></div>
+
+
+<p>A few notable differences are that the function is now spit into two. The function 'find_max_worker' executes once for each thread and the function 'find_max' operates in the main thread. We simply split the array into as many segments as there are threads, allow each thread to find the max in its own segment and then call the function once more on the results from each of the threads.</p>
+<p>Testing this implementation with different numbers of threads results in the graph below.</p>
+<p><img alt="Photo" src="{attach}python-parallel-plot.png" /></p>
+<p>Note that these results are not comparable to those above as I am using a much larger array to test. It is clearly visible four threads is the ideal number and on a quad core machine that should come as no surprise. </p>
+<p>In summary</p>
+<p>There are many ways to get your python code running in parallel. Two of these are given here but there are many more options. Which would I recommend out of multiprocessing and Cython? It was much simpler to get code running very quickly using multiprocessing. The main disadvantage is the lack of simple shared memory support. Cython requires a lot more effort on the programmers part but will give huge speed increases even without multi-threading. The ability to use the regular python threading library makes the jump to parallel relatively simple and the 'prange' loop even more so. </p>
+<p>In summary if you really want speed, go Cython. If you just want to add a few lines and run your code in parallel, go with multiprocessing or another of the many other ways to perform multiprocessing in python I have not yet looked at. Perhaps in the future native python programs will be able to run multiple threads but until that time there is no shortage of effective workarounds. </p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/willemolding">Github</a></li>
+                            <li><a href="http://www.linkedin.com/in/willem-olding-89015866">LinkedIN</a></li>
+                            <li><a href="https://www.facebook.com/willem.olding">Facebook</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
