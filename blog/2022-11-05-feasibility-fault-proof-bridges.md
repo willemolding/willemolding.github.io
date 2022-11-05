@@ -1,15 +1,17 @@
 ---
-slug: feasibility-fault-proof-bridges
 title: On the feasibility of a Fault-proof Based Blockchain Bridge
+slug: feasibility-fault-proof-bridges
 authors: willem
 tags: [bridges, provable computation, fraud-proofs]
 ---
 
----
+For the hackathon at EthBogota the ChainSafe team developed a new bridge prototype we called [Zipline](https://ethglobal.com/showcase/zipline-05w8k). This bridge uses fault proofs, the technology behind optimistic rollups, to construct a bridge. But is this actually a good idea? This article investigates some potential issues but also some paths forward to a practical version of such a bridge construction.
 
-For the hackathon at EthBogota the ChainSafe team developed a new bridge prototype we called [Zipline](https://ethglobal.com/showcase/zipline-05w8k).
+<!--truncate-->
 
-Like all great hackathon entries it is a bit of a Frankenstein. Inspired by the work on ZK bridges by Succinct Labs[^1], it uses the fault proof code from Optimism Cannon[^2] and the Eth2 light client code from Snowbridge[^3] to build a trustless block header relay for Gasper based chains (e.g. Ethereum and Gnosis Chain) to EVM chains.
+## Overview
+
+Our project, like all great hackathon entries, is a bit of a Frankenstein. Inspired by the work on ZK bridges by Succinct Labs[^1], it uses the fault proof code from Optimism Cannon[^2] and the Eth2 light client code from Snowbridge[^3] to build a trustless block header relay for Gasper based chains (e.g. Ethereum and Gnosis Chain) to EVM chains.
 
 The logic is fairly straightforward. The Altair hard-fork adds a light-client protocol to the beacon chain that allows resource constrained devices to trustlessly follow along with minimal communication and computational effort. Even this lightweight protocol is too expensive to execute within an EVM runtime and so we use fault proofs to allow off-chain execution of the light client protocol with on-chain settlement.
 

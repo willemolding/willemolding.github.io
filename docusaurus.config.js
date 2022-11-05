@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Willem Olding',
-  tagline: 'Computer Systems Engineer and Researcher',
+  tagline: 'Computer Systems Engineer and Researcher, PhD',
   url: 'https://willemolding.github.io/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
