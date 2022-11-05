@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwillemolding_github_io=self.webpackChunkwillemolding_github_io||[]).push([[535],{5641:i=>{i.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"On the feasibility of a Fault-proof Based Blockchain Bridge","permalink":"/blog/feasibility-fault-proof-bridges"}]}')}}]);
