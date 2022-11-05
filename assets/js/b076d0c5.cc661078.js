@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwillemolding_github_io=self.webpackChunkwillemolding_github_io||[]).push([[1127],{6187:l=>{l.exports=JSON.parse('{"permalink":"/blog/tags/rollups","page":1,"postsPerPage":1,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
