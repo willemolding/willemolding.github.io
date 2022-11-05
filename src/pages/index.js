@@ -14,6 +14,7 @@ function HomepageHeader() {
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p>A blog and showcase of my work discoveries in the fields of cryptography, blockchain, software engineering and honestly anything else that grabs my interest</p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
@@ -30,8 +31,8 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title="Home"
+      description="A blog on interesting thing I find in the fields of cryptography, blockchain and distributed systems">
       <HomepageHeader />
       <main>
       </main>

@@ -49,26 +49,18 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
-        logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
-        },
+        title: 'Willem Olding',
         items: [
           {to: '/blog', label: 'Blog', position: 'left'},
-          {
+          { type: "html", value: addNewTabLink("/resume.pdf", "Resume"), position: "left" },          {
             href: 'https://github.com/willemolding',
             label: 'GitHub',
-            position: 'right',
           },
         ],
       },
       footer: {
         style: 'dark',
         links: [
-          {
-            title: 'Connect',
-            items: [
               {
                 label: 'GitHub',
                 href: 'https://github.com/willemolding',
@@ -82,16 +74,42 @@ const config = {
                 href: 'https://twitter.com/WillemOlding1',
               },
             ],
-          },
-        ],
         copyright: `Copyright © ${new Date().getFullYear()} Willem Olding. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: false,
+        respectPrefersColorScheme: false,
+      },
        metadata: [{name: 'keywords', content: 'research blockchain cryptocurrency cryptography'}],
     }),
 };
+
+/**
+ * Create a new tab link that also uses the responsive Docusaurus stuff
+ * @type {(href: string, label: string) => string}
+ */
+ function addNewTabLink(href, label) {
+  const CLASS_NAME = "custom_menu__link";
+  return `\
+<style>
+  @media screen and (max-width: 996px) {
+    .${CLASS_NAME} {
+        color: var(--ifm-menu-color);
+        flex: 1;
+        line-height: 1.25;
+        padding: var(--ifm-menu-link-padding-vertical)
+          var(--ifm-menu-link-padding-horizontal);
+    }
+  }
+</style>
+<a target="_blank" rel="noopener noreferrer" class="navbar__link ${CLASS_NAME}" href="${href}">
+  ${label}
+</a>`;
+}
 
 module.exports = config;
