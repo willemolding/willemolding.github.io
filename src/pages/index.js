@@ -14,7 +14,7 @@ function HomepageHeader() {
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <p>A blog and showcase of my work discoveries in the fields of cryptography, blockchain, software engineering and honestly anything else that grabs my interest</p>
+        <p>A blog of my work and discoveries in the fields of cryptography, blockchain, software engineering and honestly anything else that grabs my interest</p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
