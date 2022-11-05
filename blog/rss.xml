@@ -51,6 +51,16 @@
             <category>tokenomics</category>
         </item>
         <item>
+            <title><![CDATA[Intro to Polynomial Commitments (Video)]]></title>
+            <link>https://willemolding.github.io/blog/polynomial-commitments</link>
+            <guid>polynomial-commitments</guid>
+            <pubDate>Wed, 03 Nov 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[A gentle introduction to polynomial commitments and some applications]]></description>
+            <content:encoded><![CDATA[<p>A gentle introduction to polynomial commitments and some applications</p><iframe width="640" height="480" src="https://www.youtube.com/embed/R47AIqaZHgs" title="Into to Polynomial Commitments" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>]]></content:encoded>
+            <category>cryptography</category>
+            <category>polynomial commitments</category>
+        </item>
+        <item>
             <title><![CDATA[Fast Exits from Optimistic Rollups (Video)]]></title>
             <link>https://willemolding.github.io/blog/fast-exits</link>
             <guid>fast-exits</guid>

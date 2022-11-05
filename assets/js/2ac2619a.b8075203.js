@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwillemolding_github_io=self.webpackChunkwillemolding_github_io||[]).push([[72],{3486:l=>{l.exports=JSON.parse('{"label":"tokenomics","permalink":"/blog/tags/tokenomics","allTagsPath":"/blog/tags","count":2}')}}]);

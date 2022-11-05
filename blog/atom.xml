@@ -66,6 +66,20 @@
         <category label="tokenomics" term="tokenomics"/>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Intro to Polynomial Commitments (Video)]]></title>
+        <id>polynomial-commitments</id>
+        <link href="https://willemolding.github.io/blog/polynomial-commitments"/>
+        <updated>2021-11-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A gentle introduction to polynomial commitments and some applications]]></summary>
+        <content type="html"><![CDATA[<p>A gentle introduction to polynomial commitments and some applications</p><iframe width="640" height="480" src="https://www.youtube.com/embed/R47AIqaZHgs" title="Into to Polynomial Commitments" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>]]></content>
+        <author>
+            <name>Willem Olding</name>
+            <uri>https://github.com/willemolding</uri>
+        </author>
+        <category label="cryptography" term="cryptography"/>
+        <category label="polynomial commitments" term="polynomial commitments"/>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Fast Exits from Optimistic Rollups (Video)]]></title>
         <id>fast-exits</id>
         <link href="https://willemolding.github.io/blog/fast-exits"/>
