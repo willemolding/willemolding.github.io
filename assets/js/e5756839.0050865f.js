@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwillemolding_github_io=self.webpackChunkwillemolding_github_io||[]).push([[1996],{9622:e=>{e.exports=JSON.parse('{"permalink":"/blog/tags/bridges","page":1,"postsPerPage":2,"totalPages":1,"totalCount":2,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

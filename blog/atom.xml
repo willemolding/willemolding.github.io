@@ -23,6 +23,21 @@
         <category label="fraud-proofs" term="fraud-proofs"/>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Zipline Lightning Talk at Gnosis Builders (Video)]]></title>
+        <id>zipline-lightning</id>
+        <link href="https://willemolding.github.io/blog/zipline-lightning"/>
+        <updated>2022-10-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A lightning talk by Myself, Eric Tu and Cayman Nava on our project Zipline. From Evening With Gnosis Chain side event at Devcon Bogota 2022.]]></summary>
+        <content type="html"><![CDATA[<p>A lightning talk by Myself, Eric Tu and Cayman Nava on our project Zipline. From Evening With Gnosis Chain side event at Devcon Bogota 2022.</p><iframe width="560" height="315" src="https://www.youtube.com/embed/KkW4hLHdjrg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>]]></content>
+        <author>
+            <name>Willem Olding</name>
+            <uri>https://github.com/willemolding</uri>
+        </author>
+        <category label="bridges" term="bridges"/>
+        <category label="provable computation" term="provable computation"/>
+        <category label="fraud-proofs" term="fraud-proofs"/>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[What is a Pre-image Oracle and why is it awesome?]]></title>
         <id>preimge-oracle</id>
         <link href="https://willemolding.github.io/blog/preimge-oracle"/>
