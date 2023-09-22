@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwillemolding_github_io=self.webpackChunkwillemolding_github_io||[]).push([[5083],{2488:l=>{l.exports=JSON.parse('{"label":"l2","permalink":"/blog/tags/l-2","allTagsPath":"/blog/tags","count":1}')}}]);
